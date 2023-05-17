@@ -43,9 +43,11 @@ public class OrderServiceImpl implements OrderService {
         long customerId = buyOrder.getCustomerId();
         List<Long> items = buyOrder.getItemIds();
         if (customerId == 0L) {
-            return new ResponseEntity<>(Collections.singletonMap("error", "Customer not found"), HttpStatus.NOT_FOUND);
-        } else if (items.isEmpty()) {
-            return new ResponseEntity<>(Collections.singletonMap("error", "Product not found"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(Collections.singletonMap("error", "Customer not found, please add: customerId:"), HttpStatus.NOT_FOUND);
+        } else if (items == null){
+            return new ResponseEntity<>(Collections.singletonMap("error", "Items List not found, please add: itemIds:" ), HttpStatus.NOT_FOUND);
+        }   else if (items.isEmpty()) {
+            return new ResponseEntity<>(Collections.singletonMap("error", "Items not found"), HttpStatus.NOT_FOUND);
         } else {
             Order order = new Order(customerId, buyOrder.getItemIds());
             orderRepository.save(order);
