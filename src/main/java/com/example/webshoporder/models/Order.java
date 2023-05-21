@@ -20,6 +20,7 @@ public class Order {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderDate;
     private long customerId;
+
     @ElementCollection
     @CollectionTable(name = "orders_items", joinColumns = @JoinColumn(name = "order_id"))
     @Column(name = "items_id")
