@@ -1,20 +1,53 @@
-1. create docker network for the project
+# Webshop Order
 
-```docker network create webshop-network```
+1. Pushing to GitHub packages.
 
+    ```docker build -t ghcr.io/knottem/webshoporder .```
 
-2.  start up the database, change password to your own password
+    ```docker push ghcr.io/knottem/webshoporder```
+<br><br><br>
 
-```docker run --network=webshop-network --name webshopdatabase -itd -p 3306:3306 ghcr.io/knottem/webshopdatabase```
+2. start with a docker compose file, swap out the <databasepassword> with your own password.
 
+    name the file docker-compose.yml
 
-3. start up the backend, change password to same as in step 2
+    The healthcheck is stupid, but it works.
 
+```yml
+version: "3.9"
 
-```docker run --name webshoporder -itd --network=webshop-network -e DB_PASSWORD=password -e MYSQL_HOST=webshopdatabase -p 8080:8080 ghcr.io/knottem/webshoporder```
+networks:
+  webshop-network:
+    driver: bridge
 
-4. Sidenote - pushing to GitHub packages.
+services:
+  webshopdatabase:
+    image: ghcr.io/knottem/webshopdatabase:latest
+    container_name: databasecontainer
+    networks:
+      - webshop-network
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "exit"]
+      interval: 20s
+      timeout: 30s
 
-```docker build -t ghcr.io/knottem/webshoporder .```
+  webshoporder:
+    image: ghcr.io/knottem/webshoporder:latest
+    container_name: ordercontainer
+    networks:
+      - webshop-network
+    environment:
+      - DB_PASSWORD=<databasepassword>
+      - MYSQL_HOST=webshopdatabase
+    ports:
+      - "9090:8080"
+    depends_on:
+      webshopdatabase:
+        condition: service_healthy
+```
 
-```docker push ghcr.io/knottem/webshoporder```
+3. Start the containers with docker compose.
+
+```docker-compose up -d```
