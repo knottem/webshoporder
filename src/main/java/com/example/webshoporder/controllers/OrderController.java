@@ -21,9 +21,19 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
+    @RequestMapping("/ordersitems")
+    public ResponseEntity<Object> getAllOrdersWithItems() {
+        return orderService.getAllOrdersWithItems();
+    }
+
     @RequestMapping("/orders/{id}")
-    public ResponseEntity<Object> getOrderById(@PathVariable(required = false) long id) {
+    public ResponseEntity<Object> getOrderById(@PathVariable long id) {
         return orderService.getOrderById(id);
+    }
+
+    @RequestMapping("/ordersitems/{id}")
+    public ResponseEntity<Object> getOrderByIdWithItems(@PathVariable long id) {
+        return orderService.getOrderByIdWithItems(id);
     }
 
     @PostMapping("/orders/buy")

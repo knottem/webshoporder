@@ -13,8 +13,8 @@
 
 ```docker run --name webshoporder -itd --network=webshop-network -e DB_PASSWORD=password -e MYSQL_HOST=webshopdatabase -p 8080:8080 ghcr.io/knottem/webshoporder```
 
-4. Sidenote
+4. Sidenote - pushing to GitHub packages.
 
-```docker build -t ghcr.io/knottem/webshopdatabase .```
+```docker build -t ghcr.io/knottem/webshoporder .```
 
-```docker push ghcr.io/knottem/webshopdatabase```
+```docker push ghcr.io/knottem/webshoporder```

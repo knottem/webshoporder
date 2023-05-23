@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface OrderService {
     List<Order> getAllOrders();
+    ResponseEntity<Object> getAllOrdersWithItems();
     ResponseEntity<Object> getOrderById(long id);
+    ResponseEntity<Object> getOrderByIdWithItems(long id);
     ResponseEntity<Object> buyItem(BuyOrder buyOrder);
 }
