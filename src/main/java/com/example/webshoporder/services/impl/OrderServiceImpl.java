@@ -77,10 +77,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResponseEntity<Object> buyItem(BuyOrder buyOrder) {
-        //boolean customerExists = checkCustomerExistence(buyOrder.getCustomerId());
-        boolean customerExists = true; // Replace with your customer existence check
+        boolean customerExists = checkCustomerExistence(buyOrder.getCustomerId());
         logger.info("Customer exists: " + customerExists);
-
         if (!customerExists) {
             logger.info("Customer not found, sending back error message");
             return new ResponseEntity<>(Collections.singletonMap("error", "Customer not found, with customerId: " + buyOrder.getCustomerId()), HttpStatus.NOT_FOUND);
