@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class TestOrder {
     private long customerId;
     private List<Item> items;
 
-    public TestOrder(Long id, long customerId, List<Item> items, LocalDateTime orderDate){
+    public TestOrder(Long id, long customerId, List<Item> items, LocalDateTime orderDate) {
         this.id = id;
         this.customerId = customerId;
         this.items = items;
