@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -113,6 +114,8 @@ public class OrderServiceImpl implements OrderService {
             return Boolean.TRUE.equals(responseEntity.getBody());
         } catch (HttpClientErrorException.NotFound ex) {
             return false;
+        } catch (RestClientException e) {
+            return false;
         }
     }
 
@@ -121,6 +124,8 @@ public class OrderServiceImpl implements OrderService {
             ResponseEntity<Item> responseEntity = restTemplate.exchange(itemUrl + itemId, HttpMethod.GET, null, Item.class);
             return responseEntity.getBody();
         } catch (HttpClientErrorException.NotFound ex) {
+            return null;
+        } catch (RestClientException e) {
             return null;
         }
     }
@@ -136,25 +141,3 @@ public class OrderServiceImpl implements OrderService {
         return items;
     }
 }
-
-/*
-    public ResponseEntity<Object> buyItemV2(BuyOrder buyOrder) {
-        List<Long> items = buyOrder.getItemIds();
-        boolean customerExists = checkCustomerExistence(buyOrder.getCustomerId());
-        logger.info("Customer exists: " + customerExists);
-        if (!customerExists) {
-            logger.info("Customer not found, sending back error message");
-            return new ResponseEntity<>(Collections.singletonMap("error", "Customer not found, please add: customerId:"), HttpStatus.NOT_FOUND);
-        } else if (items == null){
-            return new ResponseEntity<>(Collections.singletonMap("error", "Items List not found, please add: itemIds:" ), HttpStatus.NOT_FOUND);
-        } else if (items.isEmpty()) {
-            return new ResponseEntity<>(Collections.singletonMap("error", "Items not found"), HttpStatus.NOT_FOUND);
-        } else {
-            Order order = new Order(buyOrder.getCustomerId(), buyOrder.getItemIds());
-            orderRepository.save(order);
-            logger.info("Order created: " + order);
-            return new ResponseEntity<>(order, HttpStatus.CREATED);
-        }
-    }
-
- */
