@@ -16,13 +16,19 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class WebSecurityConfig {
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
-        http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/orders/buy").hasRole("ADMIN")
-                        .requestMatchers("/orders","/orders/","/ordersitems", "/orders/**", "/ordersitems/**").permitAll())
-                .httpBasic(withDefaults())
-                .csrf().disable();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        //Setting roles
+        http.authorizeHttpRequests(r -> r
+                .requestMatchers("/orders/buy").hasRole("ADMIN")
+                .requestMatchers("/orders","/orders/","/ordersitems", "/orders/**", "/ordersitems/**").permitAll());
+
+        //showing web page if not authed;
+        http.httpBasic(withDefaults());
+
+        //disabling csrf for POST.
+        http.csrf().disable();
+
         return http.build();
     }
 
