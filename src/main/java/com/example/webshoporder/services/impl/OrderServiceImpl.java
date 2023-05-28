@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderServiceImpl(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-        this.restTemplate = new RestTemplate()
+        this.restTemplate = new RestTemplate();
         this.executor = new ThreadPoolTaskExecutor();
         this.executor.initialize();
     }
