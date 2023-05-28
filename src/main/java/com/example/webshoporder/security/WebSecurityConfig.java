@@ -23,7 +23,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/orders/buy").hasRole("ADMIN")
                 .requestMatchers("/orders","/orders/","/ordersitems", "/orders/**", "/ordersitems/**").permitAll());
 
-        //showing web page if not authed;
+        //Use Basic Auth
         http.httpBasic(withDefaults());
 
         //disabling csrf for POST.
